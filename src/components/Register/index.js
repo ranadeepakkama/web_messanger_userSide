@@ -1,20 +1,39 @@
 import { useState } from "react"
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 import './index.css'
 
 const Register = () => {
-    const {name,setName} = useState('')
-    const {email,setEmail} = useState('')
-    const {password,setPassword} = useState('')
+    const [name,setName] = useState('')
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
     const [registerStatus,setRegisterStatus] = useState('')
 
-    const onSubmitForm = e => {
-        e.preventDefault()
-    }
+    const  url = "http://localhost:4040"
 
     const navigate = useNavigate()
     const onClickLogin = () => {
         navigate('/login')
+    }
+
+    const onSubmitForm = async e => {
+        e.preventDefault()
+        try{
+            const response = await axios.post(`${url}/register`,{
+                username: name,
+                email: email,
+                password: password
+            })
+            console.log('new User Register', response.data)
+            setRegisterStatus('New User Registered');
+            if (response.status === 201){
+                navigate('/login')
+            }
+        }catch(e){
+            console.log(e.message)
+            setRegisterStatus('failed to register new user/ user already registered');
+        }
+        
     }
 
     return (
