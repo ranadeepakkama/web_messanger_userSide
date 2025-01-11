@@ -9,14 +9,13 @@ const Register = () => {
     const [password,setPassword] = useState('')
     const [registerStatus,setRegisterStatus] = useState('')
 
-    const  url = "http://localhost:4040"
-
     const navigate = useNavigate()
     const onClickLogin = () => {
         navigate('/login')
     }
 
-    const onSubmitForm = async e => {
+    const url = "http://localhost:4040"
+    const onSubmitForm = async (e) => {
         e.preventDefault()
         try{
             const response = await axios.post(`${url}/register`,{
@@ -24,7 +23,6 @@ const Register = () => {
                 email: email,
                 password: password
             })
-            console.log('new User Register', response.data)
             setRegisterStatus('New User Registered');
             if (response.status === 201){
                 navigate('/login')
@@ -42,13 +40,13 @@ const Register = () => {
                 <h1 style={{textAlign:'center', fontFamily:'serif'}}>Register</h1>
                 <form className='register-form d-flex flex-column justify-content-between align-items-center m-1' onSubmit={onSubmitForm}>
                     <div>
-                        <input id = 'name' required className='register-input' type='text' onChange={e => setName(e.target.value)} placeholder='Enter name'/>
+                        <input id = 'name' required className='register-input' value={name} type='text' onChange={e => setName(e.target.value)} placeholder='Enter name'/>
                     </div>
                     <div>
-                        <input id='email' required className='register-input' type='text' onChange={(e) => setEmail(e.target.value)} placeholder='Enter email'/>
+                        <input id='email' required className='register-input' type='text' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Enter email'/>
                     </div>
                     <div>
-                        <input type='password' required className='register-input' id='register-password' onChange={e => setPassword(e.target.value)} placeholder='Enter Password'/>
+                        <input type='password' required className='register-input' id='register-password' value={password} onChange={e => setPassword(e.target.value)} placeholder='Enter Password'/>
                     </div>
                     <div>
                         <button type='submit' className='btn btn-primary mt-2'>Submit</button>
